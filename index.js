@@ -21,7 +21,7 @@ const additional = [
 	{ loc: 'https://only.digital/404' }
 ]
 
-const len = [...sitemap.urlset.url, ...additional].length
+const urls = [...sitemap.urlset.url, ...additional]
 
 const browser = await puppeteer.launch()
 const page = await browser.newPage()
@@ -29,7 +29,7 @@ const page = await browser.newPage()
 let output = {}
 let count = 0
 
-for (const url of [...sitemap.urlset.url, ...additional]) {
+for (const url of urls) {
 	await page.goto(url.loc)
 	count++
 
@@ -57,7 +57,7 @@ for (const url of [...sitemap.urlset.url, ...additional]) {
 
 	stdout.clearLine(0)
 	stdout.cursorTo(0)
-	stdout.write(`urls done: ${count} / ${len}`)
+	stdout.write(`urls done: ${count} / ${urls.length}`)
 
 	output[count] = {
 		url: data.loc === data.url ? data.loc : `${data.loc} >>> ${data.url}`,
